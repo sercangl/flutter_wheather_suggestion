@@ -22,7 +22,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getData() async {
     Response response = await get(
         'https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22');
-    print(response);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.statusCode);
+    }
   }
 
   @override
