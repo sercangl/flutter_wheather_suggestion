@@ -3,12 +3,16 @@ import 'package:flutter_wheather_suggestions/services/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+const apiKey = 'c464518db2279f6314c70cd56a5a0e8c';
+
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double latitude;
+  double longitude;
   @override
   void initState() {
     super.initState();
@@ -18,11 +22,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
+
+    latitude = location.latitude;
+    longitude = location.longitude;
+    getData();
   }
 
   void getData() async {
     http.Response response = await http.get(
-        'https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
     //print(response.body);
 
     if (response.statusCode == 200) {
@@ -30,7 +38,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
       var lon = jsonDecode(data)['coord']['lon'];
       var lat = jsonDecode(data)['coord']['lat'];
-
+      var cityName = jsonDecode(data)['name'];
+      print(cityName);
       print(lon);
       print(lat);
     } else {
