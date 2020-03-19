@@ -29,8 +29,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
       String data = response.body;
 
       var lon = jsonDecode(data)['coord']['lon'];
+      var lat = jsonDecode(data)['coord']['lat'];
 
       print(lon);
+      print(lat);
     } else {
       print(response.statusCode);
     }
